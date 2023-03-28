@@ -21,12 +21,14 @@ namespace WebApi_JWT.Repository_s
 				{
 					return "userName not Found";
 				}
+				return "";
 			}
 			catch (Exception)
 			{
 
 				return "-500";
 			}
+			return "";
 		}
 
 		public async Task<string> Register(UserLogin user,string rol)
@@ -57,7 +59,7 @@ namespace WebApi_JWT.Repository_s
 				newUser.Rol= rol;
 				await _db.users.AddAsync(newUser);
 				await _db.SaveChangesAsync();
-				return "newUser : " + user.UserName;
+				return "newUser";
 			}
 			catch (Exception)
 			{

@@ -6,7 +6,7 @@ namespace WebApi_JWT.Repository_s
 	{
 	    Task<string> Login(UserLogin user_login);
 
-		Task<string> Register(Users user);
+		Task<string> Register(UserRegister user);
 
 		Task<string> Update(UserLogin user_login);
 
