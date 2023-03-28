@@ -7,8 +7,8 @@ namespace WebApi_JWT.Models
 	{
 		[Key]
         public int Id { get; set; }
-		[ForeignKey(nameof(Users.Id))]
-		public int IdUser { get; set; }
+	//	[ForeignKey(nameof(Users.Id))]
+		//public int IdUser { get; set; }
 		public string  Name { get; set; }
 
 		public string Category { get; set; }
