@@ -19,7 +19,40 @@ namespace WebApi_JWT.Controllers
 
 		}
 
-		[HttpPost]
+		[HttpPost("Login")]
+		public async Task<ActionResult> Login(UserLogin user)
+		{
+			try
+			{
+				var resp = await _user.Login(user);
+				if (resp == "notfound")
+				{
+					_response.DisplayMessage = "User not found";
+					return BadRequest(_response);
+				}
+				if (resp=="wrongPassword")
+				{
+					_response.DisplayMessage = "wrongPassword";
+					return BadRequest(_response);
+				}
+				if (resp == "ok")
+				{
+					_response.DisplayMessage = "Welcome : "+user.UserName;
+					return Ok(_response);
+				}
+				_response.DisplayMessage = "-500";
+				return BadRequest(_response);
+			}
+			catch (Exception e)
+			{
+				_response.ErrorMessages = new List<string> { e.Message };
+				_response.DisplayMessage = "Error";
+				return BadRequest(_response);
+
+			}
+		}
+
+		[HttpPost("Register")]
 		public async Task<ActionResult>  Register(UserRegister user)
 		{
 			try

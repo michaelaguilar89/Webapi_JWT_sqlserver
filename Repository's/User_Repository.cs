@@ -16,22 +16,31 @@ namespace WebApi_JWT.Repository_s
 		{
 			try
 			{
-			 var user= await _db.users.AnyAsync(x=>x.UserName == user_login.UserName);
-				if (user==null)
+				var user = await _db.users.FirstOrDefaultAsync(
+					x=>x.UserName.ToLower() == user_login.UserName.ToLower()
+					);
+				if (user == null)
 				{
-					return "userName not Found";
+					return "notfound";
 				}
-				return "";
+				else if (VerifyPasswordHash(user_login.Password,user.PasswordHash,user.PasswordSalt)==false)
+				{
+					return "wrongPassword";
+				}
+				else
+				{
+					return "ok";
+				}
 			}
 			catch (Exception)
 			{
 
 				return "-500";
 			}
-			return "";
+			
 		}
 
-		public async Task<string> Register(UserLogin user,string rol)
+		public async Task<string> Register(UserRegister user)
 		{
 			try
 			{
@@ -56,7 +65,7 @@ namespace WebApi_JWT.Repository_s
 				newUser.PasswordSalt = pasawordSalt;
 				newUser.PasswordHash = passwordHash;
 				newUser.UserName = user.UserName;
-				newUser.Rol= rol;
+				newUser.Rol = user.Rol;
 				await _db.users.AddAsync(newUser);
 				await _db.SaveChangesAsync();
 				return "newUser";
@@ -65,6 +74,23 @@ namespace WebApi_JWT.Repository_s
 			{
 
 				return "-500";
+			}
+		}
+		// this method verify password
+		private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+		{
+			using(var hmac=new System.Security.Cryptography.HMACSHA512(passwordSalt))
+			{
+				var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+				for( int i=0;i>computedHash.Length ; i++)
+				{
+				 	if(computedHash[i] != passwordHash[i])
+					{
+						return false;
+					}
+					
+				}
+				return true;
 			}
 		}
 
