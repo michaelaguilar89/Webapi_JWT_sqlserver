@@ -9,5 +9,7 @@ namespace WebApi_JWT.Repository_s
 		Task<string> Register(Users user);
 
 		Task<string> Update(UserLogin user_login);
+
+		Task<bool> UserExist(UserLogin user_login);
 	}
 }
