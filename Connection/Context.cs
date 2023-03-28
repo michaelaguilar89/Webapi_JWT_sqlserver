@@ -5,7 +5,7 @@ namespace WebApi_JWT.Connection
 {
 	public class Context : DbContext
 	{
-		public Context(DbContextOptions options) : base(options)
+		public Context(DbContextOptions<Context> options) : base(options)
 		{
 		}
 

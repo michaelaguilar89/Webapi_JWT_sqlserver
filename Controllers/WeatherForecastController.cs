@@ -12,17 +12,6 @@ namespace WebApi_JWT.Controllers
 		"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 	};
 
-		 List<Products> products = new List<Products>() {
-			new Products {Name="Camiseta Unisex",Category="Ropa",Price=3000,Stock=100 },
-			new Products {Name="Pantalon Levis",Category="Ropa",Price=15000,Stock=90 },
-			new Products {Name="Vestido Dama",Category="Ropa",Price=8000,Stock=800 }
-		};
-
-		List<Users> users = new List<Users>() {
-		new Users{ UserName="Michael", Password="123456",Rol="Administrador"},
-		new Users{ UserName="Abraham", Password="123456",Rol="Supervisor"}
-			};
-
 		private readonly ILogger<WeatherForecastController> _logger;
 		private readonly IConfiguration _config;
 		public WeatherForecastController(ILogger<WeatherForecastController> logger, IConfiguration config)
@@ -34,14 +23,10 @@ namespace WebApi_JWT.Controllers
 		[HttpPut(Name ="GetProducts")]
 		public IActionResult GetProducts()
 		{
-			return  Ok(products);
+			return  Ok("hello");
 		}
 
-		[HttpPost(Name ="GetUsers")]
-		public IActionResult GetUsers()
-		{
-			return Ok(users);
-		}
+		
 
 		[HttpGet(Name = "GetWeatherForecast")]
 		public IEnumerable<WeatherForecast> Get()
