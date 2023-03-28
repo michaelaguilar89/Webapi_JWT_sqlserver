@@ -30,7 +30,7 @@ namespace WebApi_JWT.Controllers
 					_response.DisplayMessage = "User not found";
 					return BadRequest(_response);
 				}
-				if (resp=="wrongPassword")
+				if (resp == "wrongPassword")
 				{
 					_response.DisplayMessage = "wrongPassword";
 					return BadRequest(_response);

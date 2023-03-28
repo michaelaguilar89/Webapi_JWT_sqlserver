@@ -23,7 +23,8 @@ namespace WebApi_JWT.Repository_s
 				{
 					return "notfound";
 				}
-				else if (VerifyPasswordHash(user_login.Password,user.PasswordHash,user.PasswordSalt)==false)
+				bool passwordCorrect = VerifyPasswordHash(user_login.Password, user.PasswordHash, user.PasswordSalt);
+				if (passwordCorrect==false)
 				{
 					return "wrongPassword";
 				}
@@ -82,7 +83,7 @@ namespace WebApi_JWT.Repository_s
 			using(var hmac=new System.Security.Cryptography.HMACSHA512(passwordSalt))
 			{
 				var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-				for( int i=0;i>computedHash.Length ; i++)
+				for( int i=0;i<computedHash.Length ; i++)
 				{
 				 	if(computedHash[i] != passwordHash[i])
 					{
