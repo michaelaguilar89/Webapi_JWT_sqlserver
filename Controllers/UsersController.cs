@@ -38,6 +38,10 @@ namespace WebApi_JWT.Controllers
 				if (resp == "ok")
 				{
 					_response.DisplayMessage = "Welcome : "+user.UserName;
+					UserRequest myUser = new ();
+					myUser = await _user.GetUser(user.UserName);
+					_response.Result = myUser;
+
 					return Ok(_response);
 				}
 				_response.DisplayMessage = "-500";
@@ -73,9 +77,11 @@ namespace WebApi_JWT.Controllers
 				if (resp=="newUser")
 				{
 					_response.DisplayMessage = "Welcome ";
-					UserRequest userData = new();
-					userData.UserName = user.UserName;
-					userData.Rol = user.Rol;
+					UserRequest myUser = new();
+					myUser = await _user.GetUser(user.UserName);
+					_response.Result = myUser;
+
+					
 					return Ok(_response);		
 				}
 

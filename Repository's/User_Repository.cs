@@ -12,6 +12,28 @@ namespace WebApi_JWT.Repository_s
 			_db = db;
 		}
 
+		public async Task<UserRequest> GetUser(string username)
+		{
+			try
+			{
+				UserRequest user = new();
+				var userData = await _db.users.FirstOrDefaultAsync(
+					x=>x.UserName.ToLower().Equals(username.ToLower())
+					);
+				user.Id = userData.Id;
+				user.UserName=userData.UserName;
+				user.Rol = userData.Rol;
+				user.JWT = "something";
+				user.Message = "...";
+				return user;
+			}
+			catch (Exception)
+			{
+				UserRequest user = new();
+				user.Message = "-500";
+				return user;
+			}
+		}
 		public async Task<string> Login(UserLogin user_login)
 		{
 			try
