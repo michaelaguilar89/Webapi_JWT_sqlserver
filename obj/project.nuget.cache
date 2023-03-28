@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "Foj0szN8vBAvQYsYXQGcnx1Y9auDmAmhm3bbDBVrLBnMXThU54fYSY9eU0k+VZV9aEIRLj/ivbg5BHyT4g4JEQ==",
+  "dgSpecHash": "BalUX5idyN0h23uiFz7zzRje8ZdTTLkpX33isaiQK28m5yrFjsXxKxlogH4+VZt81nXA/lkYVjGIiU/v2TOalQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\mchla\\OneDrive\\Documentos\\Proyectos\\WebApi_JWT\\WebApi_JWT.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mchla\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
+    "C:\\Users\\mchla\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.15\\microsoft.aspnetcore.authentication.jwtbearer.6.0.15.nupkg.sha512",
     "C:\\Users\\mchla\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\mchla\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.4\\microsoft.data.sqlclient.2.1.4.nupkg.sha512",
     "C:\\Users\\mchla\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.1.1\\microsoft.data.sqlclient.sni.runtime.2.1.1.nupkg.sha512",
@@ -29,8 +30,8 @@
     "C:\\Users\\mchla\\.nuget\\packages\\microsoft.identitymodel.abstractions\\6.27.0\\microsoft.identitymodel.abstractions.6.27.0.nupkg.sha512",
     "C:\\Users\\mchla\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\6.27.0\\microsoft.identitymodel.jsonwebtokens.6.27.0.nupkg.sha512",
     "C:\\Users\\mchla\\.nuget\\packages\\microsoft.identitymodel.logging\\6.27.0\\microsoft.identitymodel.logging.6.27.0.nupkg.sha512",
-    "C:\\Users\\mchla\\.nuget\\packages\\microsoft.identitymodel.protocols\\6.8.0\\microsoft.identitymodel.protocols.6.8.0.nupkg.sha512",
-    "C:\\Users\\mchla\\.nuget\\packages\\microsoft.identitymodel.protocols.openidconnect\\6.8.0\\microsoft.identitymodel.protocols.openidconnect.6.8.0.nupkg.sha512",
+    "C:\\Users\\mchla\\.nuget\\packages\\microsoft.identitymodel.protocols\\6.10.0\\microsoft.identitymodel.protocols.6.10.0.nupkg.sha512",
+    "C:\\Users\\mchla\\.nuget\\packages\\microsoft.identitymodel.protocols.openidconnect\\6.10.0\\microsoft.identitymodel.protocols.openidconnect.6.10.0.nupkg.sha512",
     "C:\\Users\\mchla\\.nuget\\packages\\microsoft.identitymodel.tokens\\6.27.0\\microsoft.identitymodel.tokens.6.27.0.nupkg.sha512",
     "C:\\Users\\mchla\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\mchla\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
