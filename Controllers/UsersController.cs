@@ -40,6 +40,7 @@ namespace WebApi_JWT.Controllers
 					_response.DisplayMessage = "Welcome : "+user.UserName;
 					UserRequest myUser = new ();
 					myUser = await _user.GetUser(user.UserName);
+					
 					_response.Result = myUser;
 
 					return Ok(_response);
@@ -74,19 +75,16 @@ namespace WebApi_JWT.Controllers
 					return BadRequest(_response);
 				}
 				
-				if (resp=="newUser")
-				{
+							
 					_response.DisplayMessage = "Welcome ";
 					UserRequest myUser = new();
 					myUser = await _user.GetUser(user.UserName);
+				    myUser.JWT= resp;
 					_response.Result = myUser;
 
 					
 					return Ok(_response);		
-				}
-
-				_response.DisplayMessage = "internal server error";
-				return BadRequest(_response);
+				
 
 			}
 			catch (Exception e)

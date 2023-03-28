@@ -28,14 +28,14 @@ namespace WebApi_JWT.Repository_s
 				user.Id = userData.Id;
 				user.UserName=userData.UserName;
 				user.Rol = userData.Rol;
-				user.JWT = "something";
+				user.JWT = CreateToken(user.Id,user.UserName,user.Rol);
 				user.Message = "...";
 				return user;
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
 				UserRequest user = new();
-				user.Message = "-500";
+				user.Message = "-500 "+e.ToString();
 				return user;
 			}
 		}
@@ -43,10 +43,11 @@ namespace WebApi_JWT.Repository_s
 		{
 			try
 			{
-				var user = await _db.users.FirstOrDefaultAsync(
+				//Users user = new();
+			    var	user = await _db.users.FirstOrDefaultAsync(
 					x=>x.UserName.ToLower() == user_login.UserName.ToLower()
 					);
-				if (user == null)
+				if (user==null)
 				{
 					return "notfound";
 				}
@@ -132,13 +133,13 @@ namespace WebApi_JWT.Repository_s
 			}
 
 		}
-		private string CreateToken(UserRequest user)
+		private string CreateToken(int id,string UserName,string Rol)
 		{
 			var claims = new List<Claim>
 			{
-				new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
-				new Claim(ClaimTypes.Name,user.UserName),
-				new Claim(ClaimTypes.Role,user.Rol)
+				new Claim(ClaimTypes.NameIdentifier,id.ToString()),
+				new Claim(ClaimTypes.Name,UserName),
+				new Claim(ClaimTypes.Role,Rol)
 				//new Claim(ClaimTypes.)
 			};
 			var Keys = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
@@ -148,7 +149,7 @@ namespace WebApi_JWT.Repository_s
 			var TokenDescriptor = new SecurityTokenDescriptor
 			{
 				Subject = new ClaimsIdentity(claims),
-				Expires = System.DateTime.Now.AddHours(1),
+				Expires = System.DateTime.UtcNow.AddHours(2),
 				SigningCredentials = Cred
 			};
 			var tokenHandler = new JwtSecurityTokenHandler();
