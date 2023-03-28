@@ -1,4 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using WebApi_JWT.Connection;
 using WebApi_JWT.Models;
 
@@ -7,9 +10,11 @@ namespace WebApi_JWT.Repository_s
 	public class User_Repository : IUser
 	{
 		private readonly Context _db;
-		public User_Repository(Context db)
+		private readonly IConfiguration _config;
+		public User_Repository(Context db, IConfiguration config)
 		{
 			_db = db;
+			_config = config;
 		}
 
 		public async Task<UserRequest> GetUser(string username)
@@ -126,6 +131,30 @@ namespace WebApi_JWT.Repository_s
 				passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
 			}
 
+		}
+		private string CreateToken(UserRequest user)
+		{
+			var claims = new List<Claim>
+			{
+				new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
+				new Claim(ClaimTypes.Name,user.UserName),
+				new Claim(ClaimTypes.Role,user.Rol)
+				//new Claim(ClaimTypes.)
+			};
+			var Keys = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
+				_config.GetSection("appSettings:Token").Value));
+			var Cred = new SigningCredentials(Keys, SecurityAlgorithms.HmacSha512Signature);
+
+			var TokenDescriptor = new SecurityTokenDescriptor
+			{
+				Subject = new ClaimsIdentity(claims),
+				Expires = System.DateTime.Now.AddHours(1),
+				SigningCredentials = Cred
+			};
+			var tokenHandler = new JwtSecurityTokenHandler();
+			var token = tokenHandler.CreateToken(TokenDescriptor);
+
+			return tokenHandler.WriteToken(token);
 		}
 		public Task<string> Update(UserLogin user_login)
 		{
