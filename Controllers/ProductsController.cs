@@ -22,53 +22,8 @@ namespace WebApi_JWT.Controllers
 			_response = new myResponse();
 		}
 
-		[HttpGet("{id}")]
-		public async Task<ActionResult> getProductById(int id)
-		{
-			try
-			{
-				Products myProduct = await _produtcs.GetProductById(id);
-				if (myProduct==null)
-				{
-					_response.DisplayMessage = "Product Id : " + id + " not found";
-					return BadRequest(_response);
-				}
-				_response.DisplayMessage = "Data of : " + id;
-				_response.Result = myProduct;
-				return Ok(_response);
-			}
-			catch (Exception e)
-			{
-
-				_response.ErrorMessages = new List<string> { e.Message };
-				_response.DisplayMessage = "Error";
-				return BadRequest(_response);
-
-			}
-		}
-		[HttpDelete("{id}")]
-		public async Task<ActionResult> deleteProduct(int id)
-		{
-			try
-			{
-				var message = await _produtcs.Delete(id);
-				if (message== "delete!")
-				{
-					_response.DisplayMessage = "Product has been removed";
-					return Ok(_response);
-				}
-				_response.DisplayMessage = "internal server error";
-				return BadRequest(_response);
-			}
-			catch (Exception e)
-			{
-
-				_response.ErrorMessages = new List<string> { e.Message };
-				_response.DisplayMessage = "Error";
-				return BadRequest(_response);
-
-			}
-		}
+		
+	
 
 		[HttpGet]
 		public async Task<ActionResult> GetAllProducts()
@@ -96,7 +51,30 @@ namespace WebApi_JWT.Controllers
 
 			}
 		}
+		[HttpGet("{id}")]
+		public async Task<ActionResult> getProductById(int id)
+		{
+			try
+			{
+				Products myProduct = await _produtcs.GetProductById(id);
+				if (myProduct == null)
+				{
+					_response.DisplayMessage = "Product Id : " + id + " not found";
+					return BadRequest(_response);
+				}
+				_response.DisplayMessage = "Data of : " + id;
+				_response.Result = myProduct;
+				return Ok(_response);
+			}
+			catch (Exception e)
+			{
 
+				_response.ErrorMessages = new List<string> { e.Message };
+				_response.DisplayMessage = "Error";
+				return BadRequest(_response);
+
+			}
+		}
 		[HttpPost]
 		public async Task<ActionResult> CreateProduct(Products newProduct)
 		{
@@ -144,6 +122,30 @@ namespace WebApi_JWT.Controllers
 				return BadRequest(_response);
 
 			}
-		} 
+		}
+		[HttpDelete("{id}")]
+		public async Task<ActionResult> deleteProduct(int id)
+		{
+			try
+			{
+				var message = await _produtcs.Delete(id);
+				if (message == "delete!")
+				{
+					_response.DisplayMessage = "Product has been removed";
+					return Ok(_response);
+				}
+				_response.DisplayMessage = "internal server error";
+				return BadRequest(_response);
+			}
+			catch (Exception e)
+			{
+
+				_response.ErrorMessages = new List<string> { e.Message };
+				_response.DisplayMessage = "Error";
+				return BadRequest(_response);
+
+			}
+		}
 	}
+
 }
