@@ -11,28 +11,86 @@ namespace WebApi_JWT.Repository_s
 			_connectionString = configuration.GetConnectionString("DefaultConnection");
 		}
 
-		public Task<string> CreateUpdate(Products product)
+		public async Task<string> CreateUpdate(Products product)
 		{
-			throw new NotImplementedException();
+			using (SqlConnection sql = new SqlConnection(_connectionString))
+			{
+				if (product.Id > 0)
+				{
+					using (SqlCommand cmd = new SqlCommand("sp_updateProduct", sql))
+					{
+						cmd.CommandType = System.Data.CommandType.StoredProcedure;
+						cmd.Parameters.Add(new SqlParameter("@Id", product.Id));
+						cmd.Parameters.Add(new SqlParameter("@Name", product.Name));
+						cmd.Parameters.Add(new SqlParameter("@Category", product.Category));
+						cmd.Parameters.Add(new SqlParameter("@Price", product.Price));
+						cmd.Parameters.Add(new SqlParameter("@Stock", product.Stock));
+						await sql.OpenAsync();
+						await cmd.ExecuteNonQueryAsync();
+						return "update!";
+					}
+				}
+				else
+				{
+					using (SqlCommand cmd = new SqlCommand("sp_insertProducts", sql))
+					{
+						cmd.CommandType = System.Data.CommandType.StoredProcedure;
+						cmd.Parameters.Add(new SqlParameter("@Name",product.Name));
+						cmd.Parameters.Add(new SqlParameter("@Category", product.Category));
+						cmd.Parameters.Add(new SqlParameter("@Price", product.Price));
+						cmd.Parameters.Add(new SqlParameter("@Stock", product.Stock));
+						await sql.OpenAsync();
+						await cmd.ExecuteNonQueryAsync();
+						return "insert!";
+					}
+				}
+			}
 		}
 
-		public Task<string> Delete(int id)
+		public async Task<string> Delete(int id)
 		{
-			throw new NotImplementedException();
+			using (SqlConnection sql = new SqlConnection(_connectionString))
+			{
+				using (SqlCommand cmd = new SqlCommand("sp_deleteProduct", sql))
+				{
+					cmd.CommandType = System.Data.CommandType.StoredProcedure;
+					cmd.Parameters.Add(new SqlParameter("@Id", id));
+					await sql.OpenAsync();
+					await cmd.ExecuteNonQueryAsync();
+					return "delete!";
+				}
+			}
 		}
 
-		public Task<Products> GetProductById(int id)
+		public async Task<Products> GetProductById(int id)
 		{
-			throw new NotImplementedException();
+			using (SqlConnection sql = new SqlConnection(_connectionString))
+			{
+				using(SqlCommand cmd = new SqlCommand("sp_getProductById", sql))
+				{
+					cmd.CommandType = System.Data.CommandType.StoredProcedure;
+					cmd.Parameters.Add(new SqlParameter("@Id", id));
+					Products product = null;
+					await sql.OpenAsync();
+					using (var reader= await cmd.ExecuteReaderAsync())
+					{
+						while (await reader.ReadAsync())
+						{
+							product = MapToValue(reader);
+						}
+					}
+					return product;
+				}
+			}
 		}
 
 		public async Task<List<Products>> GetProducts()
 		{
-			try
-			{
+			
+			
 				using (SqlConnection sql = new SqlConnection(_connectionString))
 				{
-					using (SqlCommand cmd = new SqlCommand("getAllProducts",sql))
+					using (SqlCommand cmd = new SqlCommand("sp_getAllProducts",sql))
 					{
 						cmd.CommandType = System.Data.CommandType.StoredProcedure;
 						var response = new List<Products>();
@@ -47,12 +105,8 @@ namespace WebApi_JWT.Repository_s
 						return response;
 					}
 				}
-			}
-			catch (Exception)
-			{
-
-				throw;
-			}
+			
+			
 		}
 
 		private Products MapToValue(SqlDataReader reader)
