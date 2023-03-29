@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection.Metadata.Ecma335;
 using WebApi_JWT.Models;
+using WebApi_JWT.Repository_s;
+using WebApiProduccion.Models;
 
 namespace WebApi_JWT.Controllers
 {
@@ -12,28 +14,88 @@ namespace WebApi_JWT.Controllers
 	[ApiController]
 	public class ProductsController : ControllerBase
 	{
-		private static readonly string[] Summaries = new[]
+		private readonly IProducts _produtcs;
+		protected myResponse _response;
+		public ProductsController(IProducts products)
 		{
-		"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-	};
-		string[] names = new[]
-		{
-			"juan","pablo","stefanny"
-		};
-	
-
-		[HttpGet("getProducts")]
-		public ActionResult getProducts()
-		{
-			return Ok(Summaries);
+			_produtcs = products;
+			_response = new myResponse();
 		}
 
-		[Authorize]
-		[HttpGet("getUsers")]
-		public ActionResult getUsers()
+		[HttpGet]
+		public async Task<ActionResult> GetAllProducts()
 		{
-			return Ok(names);
+			try
+			{
+				var resp = new List<Products>();
+				resp = await _produtcs.GetProducts();
+				if (resp==null)
+				{
+					_response.DisplayMessage = "Data not found";
+					return BadRequest(_response);
+				}
+				_response.DisplayMessage = "List of Produtcs";
+				_response.Result = resp;
+				return Ok(_response);
+
+			}
+			catch (Exception e)
+			{
+
+				_response.ErrorMessages = new List<string> { e.Message };
+				_response.DisplayMessage = "Error";
+				return BadRequest(_response);
+
+			}
 		}
 
+		[HttpPost]
+		public async Task<ActionResult> CreateProduct(Products newProduct)
+		{
+
+			try
+			{
+				var message = await _produtcs.CreateUpdate(newProduct);
+				if (message== "insert!")
+				{
+					_response.DisplayMessage = "insert new Record";
+					return Ok(_response);
+				}
+				_response.DisplayMessage = "internal server error";
+				return BadRequest(_response);
+			}
+			catch (Exception e)
+			{
+
+				_response.ErrorMessages = new List<string> { e.Message };
+				_response.DisplayMessage = "Error";
+				return BadRequest(_response);
+
+			}
+		}
+
+		[HttpPut]
+		public async Task<ActionResult> UpdateProduct(Products updateProduct)
+		{
+			try
+			{
+				var messages = await _produtcs.CreateUpdate(updateProduct);
+				if (messages== "update!")
+				{
+					_response.DisplayMessage = "Update Record!";
+					return Ok(_response);
+				}
+				_response.DisplayMessage = "internal server error";
+				return BadRequest(_response);
+			}
+			catch (Exception e)
+			{
+
+				_response.ErrorMessages = new List<string> { e.Message };
+				_response.DisplayMessage = "Error";
+				return BadRequest(_response);
+
+			}
+		} 
 	}
 }
