@@ -26,6 +26,7 @@ builder.Services.AddDbContext<Context>(opt =>
 });
 
 builder.Services.AddScoped<IUser, User_Repository>();
+builder.Services.AddScoped<IProducts, ProductsRepository>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddJwtBearer(options =>
